@@ -1,0 +1,22 @@
+{
+    "name": "rawls/monolog-logstash-formatter",
+    "type": "library",
+    "description": "Monolog 1 Fogstash formatter",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Tobias Nyholm",
+            "email": "tobias@happyr.com"
+        }
+    ],
+    "repositories": [
+        { "type": "composer", "url": "https://packages.happyr.io/" }
+    ],
+    "require": {
+        "php": "^7.1",
+        "monolog/monolog": "^1.23"
+    },
+    "autoload": {
+        "psr-4": { "Rawls\\Monolog\\Formatter\\": "src/" }
+    }
+}

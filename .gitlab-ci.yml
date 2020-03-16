@@ -1,0 +1,25 @@
+image: registry.gitlab.com/happyr/docker/base-php:7.3-cli-dev
+
+style:
+  image: registry.gitlab.com/happyr/coding-standard:latest
+  before_script:
+    # Add SSH key
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  script:
+    - composer install
+    - php-cs-fixer fix --dry-run --diff
+  cache:
+    paths:
+      - ./.php_cs.cache
+      - ./.composercache
+      - ./vendor
+
+trigger_satis:
+  when: always
+  only:
+    - master
+    - tags
+  script:
+    - "curl -X POST -F token=$SATIS_TRIGGER_TOKEN -F ref=master https://gitlab.com/api/v4/projects/8396928/trigger/pipeline"
+
