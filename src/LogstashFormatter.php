@@ -1,35 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rawls\Monolog\Formatter;
 
 use Monolog\Formatter\NormalizerFormatter;
 
 /**
- *
  * @author Tim Mower <timothy.mower@gmail.com>
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class LogstashFormatter extends NormalizerFormatter
+final class LogstashFormatter extends NormalizerFormatter
 {
     /**
      * @var string the name of the system for the Logstash log message, used to fill the @source field
      */
-    protected $systemName;
+    private $systemName;
 
     /**
      * @var string an application name for the Logstash log message, used to fill the @type field
      */
-    protected $applicationName;
+    private $applicationName;
 
     /**
      * @var string the key for 'extra' fields from the Monolog record
      */
-    protected $extraKey;
+    private $extraKey;
 
     /**
      * @var string the key for 'context' fields from the Monolog record
      */
-    protected $contextKey;
+    private $contextKey;
 
     /**
      * @param string      $applicationName The application that sends the data, used as the "type" field of logstash
@@ -38,54 +39,54 @@ class LogstashFormatter extends NormalizerFormatter
      * @param string      $contextKey      The key for context keys inside logstash "fields", defaults to context
      */
     public function __construct(string $applicationName, ?string $systemName = null, string $extraKey = 'extra', string $contextKey = 'context')
-{
-    // logstash requires a ISO 8601 format date with optional millisecond precision.
-    parent::__construct('Y-m-d\TH:i:s.uP');
+    {
+        // logstash requires a ISO 8601 format date with optional millisecond precision.
+        parent::__construct('Y-m-d\TH:i:s.uP');
 
-    $this->systemName = $systemName === null ? gethostname() : $systemName;
-    $this->applicationName = $applicationName;
-    $this->extraKey = $extraKey;
-    $this->contextKey = $contextKey;
-}
+        $this->systemName = null === $systemName ? \gethostname() : $systemName;
+        $this->applicationName = $applicationName;
+        $this->extraKey = $extraKey;
+        $this->contextKey = $contextKey;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function format(array $record): string
-{
-    $record = parent::format($record);
+    {
+        $record = parent::format($record);
 
-    if (empty($record['datetime'])) {
-        $record['datetime'] = gmdate('c');
-    }
-    $message = [
-        '@timestamp' => $record['datetime'],
-        '@version' => 1,
-        'host' => $this->systemName,
-    ];
-    if (isset($record['message'])) {
-        $message['message'] = $record['message'];
-    }
-    if (isset($record['channel'])) {
-        $message['type'] = $record['channel'];
-        $message['channel'] = $record['channel'];
-    }
-    if (isset($record['level_name'])) {
-        $message['level'] = $record['level_name'];
-    }
-    if (isset($record['level'])) {
-        $message['monolog_level'] = $record['level'];
-    }
-    if ($this->applicationName) {
-        $message['type'] = $this->applicationName;
-    }
-    if (!empty($record['extra'])) {
-        $message[$this->extraKey] = $record['extra'];
-    }
-    if (!empty($record['context'])) {
-        $message[$this->contextKey] = $record['context'];
-    }
+        if (empty($record['datetime'])) {
+            $record['datetime'] = \gmdate('c');
+        }
+        $message = [
+            '@timestamp' => $record['datetime'],
+            '@version' => 1,
+            'host' => $this->systemName,
+        ];
+        if (isset($record['message'])) {
+            $message['message'] = $record['message'];
+        }
+        if (isset($record['channel'])) {
+            $message['type'] = $record['channel'];
+            $message['channel'] = $record['channel'];
+        }
+        if (isset($record['level_name'])) {
+            $message['level'] = $record['level_name'];
+        }
+        if (isset($record['level'])) {
+            $message['monolog_level'] = $record['level'];
+        }
+        if ($this->applicationName) {
+            $message['type'] = $this->applicationName;
+        }
+        if (!empty($record['extra'])) {
+            $message[$this->extraKey] = $record['extra'];
+        }
+        if (!empty($record['context'])) {
+            $message[$this->contextKey] = $record['context'];
+        }
 
-    return $this->toJson($message) . "\n";
-}
+        return $this->toJson($message)."\n";
+    }
 }
