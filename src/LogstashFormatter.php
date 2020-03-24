@@ -90,7 +90,7 @@ final class LogstashFormatter extends NormalizerFormatter
         $json = $this->toJson($message);
 
         // 8000 is the limit by PHP-FPM
-        if (strlen($json) > 8000 && isset($message['context']['exception'])) {
+        if (\mb_strlen($json) > 8000 && isset($message['context']['exception'])) {
             unset($message['context']['exception']);
             $json = $this->toJson($message);
         }
