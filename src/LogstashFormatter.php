@@ -87,6 +87,14 @@ final class LogstashFormatter extends NormalizerFormatter
             $message[$this->contextKey] = $record['context'];
         }
 
-        return $this->toJson($message)."\n";
+        $json = $this->toJson($message);
+
+        // 8000 is the limit by PHP-FPM
+        if (strlen($json) > 8000 && isset($message['context']['exception'])) {
+            unset($message['context']['exception']);
+            $json = $this->toJson($message);
+        }
+
+        return $json."\n";
     }
 }
