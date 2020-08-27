@@ -15,11 +15,3 @@ style:
       - ./.composercache
       - ./vendor
 
-trigger_satis:
-  when: always
-  only:
-    - master
-    - tags
-  script:
-    - "curl -X POST -F token=$SATIS_TRIGGER_TOKEN -F ref=master https://gitlab.com/api/v4/projects/8396928/trigger/pipeline"
-
