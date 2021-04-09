@@ -13,7 +13,7 @@
         { "type": "composer", "url": "https://packages.happyr.io/" }
     ],
     "require": {
-        "php": "^7.2",
+        "php": ">=7.2",
         "monolog/monolog": "^1.23 || ^2.0"
     },
     "autoload": {

@@ -1,4 +1,4 @@
-image: registry.gitlab.com/happyr/docker/base-php:7.3-cli-dev
+image: registry.gitlab.com/happyr/docker/base-php:7.4-cli-dev
 
 style:
   image: registry.gitlab.com/happyr/coding-standard:latest
