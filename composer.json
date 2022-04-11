@@ -1,7 +1,7 @@
 {
     "name": "happyr/monolog-logstash-formatter",
     "type": "library",
-    "description": "Monolog 1 Fogstash formatter",
+    "description": "Monolog Logstash formatter",
     "license": "proprietary",
     "authors": [
         {
