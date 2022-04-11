@@ -1,5 +1,5 @@
 {
-    "name": "rawls/monolog-logstash-formatter",
+    "name": "happyr/monolog-logstash-formatter",
     "type": "library",
     "description": "Monolog 1 Fogstash formatter",
     "license": "proprietary",
@@ -17,6 +17,6 @@
         "monolog/monolog": "^1.23 || ^2.0"
     },
     "autoload": {
-        "psr-4": { "Rawls\\Monolog\\Formatter\\": "src/" }
+        "psr-4": { "Happyr\\MonologLogstashFormatter\\": "src/" }
     }
 }

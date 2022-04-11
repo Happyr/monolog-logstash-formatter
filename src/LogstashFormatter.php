@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rawls\Monolog\Formatter;
+namespace Happyr\MonologLogstashFormatter;
 
 use Monolog\Formatter\NormalizerFormatter;
 
@@ -87,10 +87,24 @@ final class LogstashFormatter extends NormalizerFormatter
             $message[$this->contextKey] = $record['context'];
         }
 
+        // TO support Funcitonbeat 8.x
+        if (isset($message[$this->contextKey]['message']) && is_array($message[$this->contextKey]['message'])) {
+            $message[$this->contextKey]['message'] = json_encode($message[$this->contextKey]['message']);
+        }
+
         $json = $this->toJson($message);
 
         // 8000 is the limit by PHP-FPM
+        if (\mb_strlen($json) > 8000 && isset($message['context']['exception']['previous'])) {
+            $message['context']['exception']['previous'] = ['removed' => 'Message too long'];
+            $json = $this->toJson($message);
+        }
+
+        // 8000 is the limit by PHP-FPM
         if (\mb_strlen($json) > 8000 && isset($message['context']['exception'])) {
+            if ($message['context']['exception'] instanceof \Throwable) {
+                $message['context']['exception_class'] = get_class($message['context']['exception']);
+            }
             unset($message['context']['exception']);
             $json = $this->toJson($message);
         }
