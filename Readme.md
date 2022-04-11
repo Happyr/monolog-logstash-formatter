@@ -7,7 +7,6 @@ monolog:
     handlers:
         filter_for_errors:
             type: fingers_crossed
-            # if *one* log is error or higher, pass *all* to handler
             action_level: warning
             handler: cloudwatch
             buffer_size: 100
