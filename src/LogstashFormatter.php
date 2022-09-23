@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Happyr\MonologLogstashFormatter;
 
 use Monolog\Formatter\NormalizerFormatter;
+use Monolog\LogRecord;
 
 /**
  * @author Tim Mower <timothy.mower@gmail.com>
@@ -52,7 +53,7 @@ final class LogstashFormatter extends NormalizerFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record): string
+    public function format(LogRecord $record): string
     {
         $record = parent::format($record);
 
