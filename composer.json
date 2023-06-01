@@ -2,7 +2,7 @@
     "name": "happyr/monolog-logstash-formatter",
     "type": "library",
     "description": "Monolog Logstash formatter",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Tobias Nyholm",
